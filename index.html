@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Подбор университетов США по профилю абитуриента" />
+    <title>S.P.A.R.K. Searcher — подбор университетов США</title>
+    <link rel="icon" type="image/jpeg" href="photo_2026-10-16_21-30-41.jpg" />
+    <link rel="apple-touch-icon" href="photo_2026-10-16_21-30-41.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="S.P.A.R.K. Searcher, на главную">
+        <span class="brand-mark"><img src="photo_2026-10-16_21-30-41.jpg" alt="" /></span>
+        <span>S.P.A.R.K. <span>Searcher</span></span>
+      </a>
+      <div class="country-pill"><i data-lucide="map-pin"></i> США <span>beta</span></div>
+      <button class="icon-button theme-button" id="themeButton" type="button" title="Переключить тему" aria-label="Переключить светлую тему">
+        <i data-lucide="moon"></i>
+      </button>
+      <button class="icon-button" id="resetButton" type="button" title="Сбросить анкету" aria-label="Сбросить анкету">
+        <i data-lucide="rotate-ccw"></i>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="intro" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">Ваш маршрут в университет</p>
+          <h1 id="pageTitle">Найдём университет,<br />который подходит именно вам.</h1>
+        </div>
+        <p class="intro-note">Сопоставляем академический профиль, бюджет, штат и формат кампуса. Результаты — отправная точка для дальнейшей проверки требований.</p>
+      </section>
+
+      <div class="workspace">
+        <aside class="profile-panel" aria-label="Параметры поиска">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Шаг 1 из 1</p>
+              <h2>Ваш профиль</h2>
+            </div>
+            <i data-lucide="sliders-horizontal"></i>
+          </div>
+          <button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="true">
+            <span><i data-lucide="sliders-horizontal"></i> Параметры поиска</span>
+            <i class="toggle-chevron" data-lucide="chevron-up"></i>
+          </button>
+
+          <form id="profileForm">
+            <label>
+              Направление
+              <select id="major" name="major">
+                <option value="computer-science">Computer Science</option>
+                <option value="business">Business / Economics</option>
+                <option value="engineering">Engineering</option>
+                <option value="biology">Biology / Pre-med</option>
+                <option value="psychology">Psychology</option>
+                <option value="design">Design / Arts</option>
+                <option value="any">Пока не выбрано</option>
+              </select>
+            </label>
+
+            <label>
+              Предпочтительный штат
+              <select id="state" name="state">
+                <option value="any">Любой штат</option>
+                <option value="California">California</option>
+                <option value="Colorado">Colorado</option>
+                <option value="Connecticut">Connecticut</option>
+                <option value="District of Columbia">District of Columbia</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Indiana">Indiana</option>
+                <option value="Iowa">Iowa</option>
+                <option value="Louisiana">Louisiana</option>
+                <option value="Maine">Maine</option>
+                <option value="Maryland">Maryland</option>
+                <option value="Michigan">Michigan</option>
+                <option value="Minnesota">Minnesota</option>
+                <option value="Nebraska">Nebraska</option>
+                <option value="New Hampshire">New Hampshire</option>
+                <option value="New Jersey">New Jersey</option>
+                <option value="New York">New York</option>
+                <option value="North Carolina">North Carolina</option>
+                <option value="Ohio">Ohio</option>
+                <option value="Oregon">Oregon</option>
+                <option value="Pennsylvania">Pennsylvania</option>
+                <option value="Rhode Island">Rhode Island</option>
+                <option value="Tennessee">Tennessee</option>
+                <option value="Massachusetts">Massachusetts</option>
+                <option value="Texas">Texas</option>
+                <option value="Illinois">Illinois</option>
+                <option value="Washington">Washington</option>
+                <option value="Florida">Florida</option>
+                <option value="Virginia">Virginia</option>
+                <option value="Vermont">Vermont</option>
+                <option value="Wisconsin">Wisconsin</option>
+              </select>
+            </label>
+
+            <div class="range-field">
+              <div class="label-row"><label for="gpa">Средний балл GPA</label><output id="gpaOutput" for="gpa">3.6</output></div>
+              <input id="gpa" name="gpa" type="range" min="2" max="4" step="0.1" value="3.6" />
+              <div class="range-ends"><span>2.0</span><span>4.0</span></div>
+            </div>
+
+            <label>
+              SAT (необязательно)
+              <select id="sat" name="sat">
+                <option value="none">Не сдавал(а) / test-optional</option>
+                <option value="1100">1100–1190</option>
+                <option value="1250">1200–1290</option>
+                <option value="1350">1300–1390</option>
+                <option value="1450">1400–1490</option>
+                <option value="1550">1500+</option>
+              </select>
+            </label>
+
+            <div class="language-grid">
+              <label>
+                IELTS
+                <select id="ielts" name="ielts">
+                  <option value="none">Не сдавал(а)</option>
+                  <option value="6">6.0</option>
+                  <option value="6.5">6.5</option>
+                  <option value="7">7.0</option>
+                  <option value="7.5">7.5+</option>
+                </select>
+              </label>
+              <label>
+                DET
+                <select id="det" name="det">
+                  <option value="none">Не сдавал(а)</option>
+                  <option value="100">100–109</option>
+                  <option value="115">110–119</option>
+                  <option value="125">120–129</option>
+                  <option value="135">130+</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Максимальный бюджет в год
+              <select id="budget" name="budget">
+                <option value="25000">до $25,000</option>
+                <option value="40000">до $40,000</option>
+                <option value="55000" selected>до $55,000</option>
+                <option value="75000">до $75,000</option>
+                <option value="100000">Бюджет не ограничен</option>
+              </select>
+            </label>
+
+            <label>
+              Уровень сложности
+              <select id="difficulty" name="difficulty">
+                <option value="balanced" selected>Сбалансированный список</option>
+                <option value="ambitious">Больше амбициозных вузов</option>
+                <option value="accessible">Больше надёжных вариантов</option>
+              </select>
+            </label>
+
+            <label>
+              Желаемое финансирование
+              <select id="grantType" name="grantType">
+                <option value="any">Любой вариант</option>
+                <option value="need-based">Need-based financial aid</option>
+                <option value="merit">Merit scholarship</option>
+                <option value="full-need">100% demonstrated need</option>
+                <option value="full-ride">Полная стоимость по специальной программе</option>
+              </select>
+            </label>
+
+            <label>
+              Политика финансовой нужды
+              <select id="aidPolicy" name="aidPolicy">
+                <option value="any">Не важно</option>
+                <option value="need-blind">Need-blind</option>
+                <option value="need-aware">Need-aware</option>
+                <option value="no-need-aid">Нет institutional need-based aid</option>
+                <option value="limited">Только ограниченные scholarship options</option>
+                <option value="program-specific">Зависит от отдельной программы</option>
+              </select>
+            </label>
+
+            <label class="grant-toggle">
+              <input id="fullGrant" name="fullGrant" type="checkbox" />
+              <span class="toggle-track" aria-hidden="true"><span></span></span>
+              <span><strong>Искать 100% need / full-cost</strong><small>Только подтверждённые программы для international first-year applicants; это не означает автоматически $0 для семьи</small></span>
+            </label>
+
+            <fieldset>
+              <legend>Какой кампус ближе?</legend>
+              <div class="choice-grid">
+                <label class="choice"><input type="radio" name="campus" value="city" /><span><i data-lucide="building-2"></i>Город</span></label>
+                <label class="choice"><input type="radio" name="campus" value="college" checked /><span><i data-lucide="trees"></i>Кампус</span></label>
+                <label class="choice"><input type="radio" name="campus" value="any" /><span><i data-lucide="compass"></i>Не важно</span></label>
+              </div>
+            </fieldset>
+
+            <button class="primary-button" type="submit"><i data-lucide="sparkles"></i> Подобрать университеты</button>
+          </form>
+        </aside>
+
+        <section class="results-area" aria-live="polite" aria-label="Подходящие университеты">
+          <div class="results-heading">
+            <div>
+              <p class="eyebrow" id="resultsEyebrow">Персональная выдача</p>
+              <h2><span id="resultCount">0</span> вариантов для вас</h2>
+            </div>
+            <div class="sort-label"><i data-lucide="arrow-down-up"></i> По соответствию</div>
+          </div>
+
+          <div class="insight" id="insight"></div>
+          <div class="results-list" id="resultsList"></div>
+        </section>
+      </div>
+    </main>
+
+    <template id="universityTemplate">
+      <article class="university-card">
+        <div class="card-image-wrap"><img class="card-image" alt="Кампус университета" /></div>
+        <div class="card-content">
+          <div class="card-topline">
+            <span class="fit-badge"></span>
+            <button class="icon-button save-button" type="button" title="Сохранить университет" aria-label="Сохранить университет"><i data-lucide="bookmark"></i></button>
+          </div>
+          <h3></h3>
+          <p class="location"><i data-lucide="map-pin"></i><span></span></p>
+          <div class="metrics"></div>
+          <p class="grant-note"></p>
+          <p class="policy-note"></p>
+          <a class="aid-source" target="_blank" rel="noopener noreferrer"><i data-lucide="external-link"></i> Официальные условия финансовой помощи</a>
+          <p class="reason"></p>
+        </div>
+        <div class="score-block"><strong></strong><span>совпадение</span></div>
+      </article>
+    </template>
+
+    <footer>
+      <div class="site-stats" aria-live="polite" aria-label="Статистика сайта">
+        <span><i data-lucide="users-round"></i><strong id="visitorCount">--</strong> посетителей</span>
+        <span><i data-lucide="mouse-pointer-click"></i><strong id="visitCount">--</strong> визитов</span>
+        <span><i data-lucide="search"></i><strong id="searchCount">--</strong> поисков</span>
+      </div>
+      <span>Финансовые статусы сверены для international first-year applicants (F-1) 03.10.2026. Перед подачей заявки откройте официальный источник в карточке и проверьте актуальные условия.</span>
+      <a class="telegram-link" href="https://t.me/sparkenglishe" target="_blank" rel="noopener noreferrer"><i data-lucide="send"></i> Telegram-канал S.P.A.R.K. English</a>
+    </footer>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
