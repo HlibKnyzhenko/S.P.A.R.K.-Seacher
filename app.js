@@ -181,7 +181,6 @@ const analytics = (() => {
   const config = window.SUPABASE_CONFIG || {};
   const storageKey = "spark-searcher-visitor-id";
   const localRateLimits = { visit: 20 * 60 * 1000, search: 45 * 1000 };
-  let client;
 
   const updateCounters = (counts) => {
     if (!counts) return;
@@ -202,23 +201,35 @@ const analytics = (() => {
     return visitorId;
   };
 
-  const getClient = () => {
-    if (!client && window.supabase && config.url && config.publishableKey) {
-      client = window.supabase.createClient(config.url, config.publishableKey);
+  const callRpc = async (functionName, payload = {}) => {
+    if (!config.url || !config.publishableKey) return null;
+    try {
+      const response = await fetch(`${config.url}/rest/v1/rpc/${functionName}`, {
+        method: "POST",
+        headers: {
+          apikey: config.publishableKey,
+          Authorization: `Bearer ${config.publishableKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        console.warn("S.P.A.R.K. analytics request failed", await response.text());
+        return null;
+      }
+      return response.json();
+    } catch (error) {
+      console.warn("S.P.A.R.K. analytics connection failed", error);
+      return null;
     }
-    return client;
   };
 
   const fetchCounters = async () => {
-    const supabase = getClient();
-    if (!supabase) return;
-    const { data, error } = await supabase.rpc("get_spark_analytics_counts");
-    if (!error) updateCounters(data?.[0]);
+    const data = await callRpc("get_spark_analytics_counts");
+    updateCounters(data?.[0]);
   };
 
   const record = async (event) => {
-    const supabase = getClient();
-    if (!supabase) return;
     const rateKey = `spark-searcher-last-${event}`;
     const lastRecorded = Number(localStorage.getItem(rateKey) || 0);
     if (Date.now() - lastRecorded < localRateLimits[event]) {
@@ -227,12 +238,12 @@ const analytics = (() => {
     }
 
     localStorage.setItem(rateKey, String(Date.now()));
-    const { data, error } = await supabase.rpc("record_spark_analytics", {
+    const data = await callRpc("record_spark_analytics", {
       p_event: event,
       p_visitor_id: getVisitorId()
     });
 
-    if (error) {
+    if (!data) {
       localStorage.removeItem(rateKey);
       fetchCounters();
       return;
