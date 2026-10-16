@@ -358,13 +358,23 @@ mobileFilterToggle.addEventListener("click", () => {
 });
 
 const themeButton = document.querySelector("#themeButton");
-themeButton.addEventListener("click", () => {
-  const isDark = document.body.dataset.theme === "dark";
-  document.body.dataset.theme = isDark ? "light" : "dark";
-  themeButton.setAttribute("aria-label", isDark ? "Переключить тёмную тему" : "Переключить светлую тему");
-  themeButton.setAttribute("title", isDark ? "Переключить тёмную тему" : "Переключить светлую тему");
-  themeButton.innerHTML = `<i data-lucide="${isDark ? "moon" : "sun"}"></i>`;
+const themeStorageKey = "spark-searcher-theme";
+const applyTheme = (theme) => {
+  const isDark = theme === "dark";
+  document.body.dataset.theme = isDark ? "dark" : "light";
+  themeButton.setAttribute("aria-label", isDark ? "Переключить светлую тему" : "Переключить тёмную тему");
+  themeButton.setAttribute("title", isDark ? "Переключить светлую тему" : "Переключить тёмную тему");
+  themeButton.innerHTML = `<i data-lucide="${isDark ? "sun" : "moon"}"></i>`;
   lucide.createIcons();
+};
+
+const savedTheme = localStorage.getItem(themeStorageKey);
+if (savedTheme === "dark" || savedTheme === "light") applyTheme(savedTheme);
+
+themeButton.addEventListener("click", () => {
+  const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
+  localStorage.setItem(themeStorageKey, nextTheme);
+  applyTheme(nextTheme);
 });
 
 renderResults();
